@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
       - name: ado-pool-cleanup
-        image: ataylorregistry.azurecr.io/ado-pool-cleaner:#{Image-Tag}#
+        image: ataylorregistry.azurecr.io/ado-pool-cleaner:#{ImageTag}#
         ports:
         - containerPort: 5000
         imagePullPolicy: Always
