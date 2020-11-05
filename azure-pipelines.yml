@@ -49,6 +49,38 @@ steps:
       docker login $(AcrName).azurecr.io --username $(CR-Username) --password $(CR-Password)
       docker push $(AcrName).azurecr.io/$(ImageName):$(ImageTag)
 
+- task: replacetokens@3
+  displayName: 'Replace tokens in Dockerfile'
+  inputs:
+    targetFiles: '**/Dockerfile'
+    encoding: 'auto'
+    writeBOM: true
+    actionOnMissing: 'warn'
+    keepToken: false
+    tokenPrefix: '#{'
+    tokenSuffix: '}#'
+    useLegacyPattern: false
+    enableTelemetry: true
+
+- task: replacetokens@3
+  displayName: 'Replace tokens in k8s.yaml'
+  inputs:
+    targetFiles: '**/k8s.yaml'
+    encoding: 'auto'
+    writeBOM: true
+    actionOnMissing: 'warn'
+    keepToken: false
+    tokenPrefix: '#{'
+    tokenSuffix: '}#'
+    useLegacyPattern: false
+    enableTelemetry: true
+
+- task: CmdLine@2
+  displayName: 'Copy artifact'
+  inputs:
+    script: |
+      cp k8s.yaml $(Pipeline.Workspace)/k8s.yaml
+
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Pipeline.Workspace)'
