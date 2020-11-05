@@ -48,3 +48,9 @@ steps:
     inlineScript: |
       docker login $(AcrName).azurecr.io --username $(CR-Username) --password $(CR-Password)
       docker push $(AcrName).azurecr.io/$(ImageName):$(ImageTag)
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    artifact: 'artifacts'
+    publishLocation: 'pipeline'
